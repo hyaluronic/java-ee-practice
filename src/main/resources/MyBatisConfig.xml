@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias type="vu.lt.mybatis.model.Bank" alias="Bank"/>
+        <typeAlias type="vu.lt.mybatis.model.Teller" alias="Teller"/>
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="MANAGED"/>
+            <dataSource type="JNDI">
+                <property name="data_source" value="TellersDataSource"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/xml/BankMapper.xml"/>
+        <mapper resource="mybatis/xml/TellerMapper.xml"/>
+    </mappers>
+</configuration>

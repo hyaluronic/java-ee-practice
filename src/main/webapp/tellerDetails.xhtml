@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+<h:head/>
+<h:body>
+    <h2>#{updateTellerDetails.teller.name}</h2>
+    <h:form>
+        <h:outputText value="department number: "/>
+        <h:inputText a:placeholder="enter the value" value="#{updateTellerDetails.teller.department}" required="true"/>
+        <h:commandButton value="update" action="#{updateTellerDetails.updateTeller}">
+            <f:param name="tellerId" value="#{updateTellerDetails.teller.id}"/>
+        </h:commandButton>
+        <h:outputText value="Value was already modified by other user. If you want to override it - try again"
+                      rendered="#{param['error'] == 'optimistic-lock-exception'}"/>
+    </h:form>
+    <h:form>
+        <h:outputText value="#{generateTellerDepartmentNumber.departmentGenerationStatus}"/>
+        <h:commandButton value="Generate teller deparment number?"
+                         disabled="#{generateTellerDepartmentNumber.departmentGenerationRunning}"
+                         action="#{generateTellerDepartmentNumber.generateNewDepartmentNumber()}">
+            <f:param name="tellerId" value="#{updateTellerDetails.teller.id}"/>
+        </h:commandButton>
+    </h:form>
+    <h:form>
+        <h2>All tellers clients:</h2>
+        <ol>
+            <ui:repeat value="#{updateTellerDetails.teller.clients}" var="client">
+                <li>
+                    <h:link value="#{client.name}" outcome="clients?clientId=#{client.id}"/>
+                </li>
+            </ui:repeat>
+        </ol>
+    </h:form>
+    <h:form>
+        <h2>All available clients:</h2>
+        <h:selectOneMenu value="#{clients.clientIdToSet}">
+            <f:selectItems value="#{clients.allClients}"/>
+        </h:selectOneMenu>
+        <h:commandButton value="Add client to the teller " action="#{clients.addClientToTeller}">
+            <f:param name="tellerId" value="#{updateTellerDetails.teller.id}"/>
+        </h:commandButton>
+    </h:form>
+    <h:form>
+        <h:inputText a:placeholder="name" value="#{clients.clientToCreate.name}" required="true"/>
+        <h:commandButton value="Add new client " action="#{clients.createClient}">
+            <f:param name="tellerId" value="#{updateTellerDetails.teller.id}"/>
+        </h:commandButton>
+    </h:form>
+    <h:link outcome="index" value="Back to home page"/>
+</h:body>
+</html>
