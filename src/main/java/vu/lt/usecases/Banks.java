@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Model
+@Model //@Names ir @RequestScoped, gali buti iterptas i JSF failus
 public class Banks {
 
     @Inject

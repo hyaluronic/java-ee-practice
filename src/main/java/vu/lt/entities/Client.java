@@ -30,7 +30,7 @@ public class Client implements Serializable {
 
     @ManyToMany
     @JoinColumn(name="TELLER_ID")
-    private List<Teller> tellers = new ArrayList<>();;
+    private List<Teller> tellers = new ArrayList<>();
 
     @OneToOne(mappedBy = "client")
     private Account account;

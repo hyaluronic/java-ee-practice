@@ -41,9 +41,9 @@ public class Account implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Account client = (Account) o;
-        return Objects.equals(id, client.id) &&
-                Objects.equals(number, client.number);
+        Account account = (Account) o;
+        return Objects.equals(id, account.id) &&
+                Objects.equals(number, account.number);
     }
 
     @Override

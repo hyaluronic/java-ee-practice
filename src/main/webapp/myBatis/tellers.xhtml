@@ -7,9 +7,15 @@
       xmlns:f="http://java.sun.com/jsf/core">
 <h:head/>
 <h:body>
-    <h2>Tellers wrokcing in #{tellersForBank.bank.name} bank:</h2>
+    <h2>Tellers worcking in #{tellersForBank.bank.name} bank:</h2>
     <ol>
         <ui:repeat value="#{tellersForBank.bank.tellers}" var="teller">
+            <li>#{teller.name} #{teller.department}</li>
+        </ui:repeat>
+    </ol>
+    <h2>Teller with no department:</h2>
+    <ol>
+        <ui:repeat value="#{banksMyBatis.tellersWithNoDepartment}" var="teller">
             <li>#{teller.name}</li>
         </ui:repeat>
     </ol>
