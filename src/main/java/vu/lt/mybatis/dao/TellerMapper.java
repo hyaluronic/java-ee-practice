@@ -2,6 +2,7 @@ package vu.lt.mybatis.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.cdi.Mapper;
 import vu.lt.mybatis.model.Teller;
 
@@ -47,5 +48,6 @@ public interface TellerMapper {
      */
     int updateByPrimaryKey(Teller record);
 
-    List<Teller> selectTellersWithNoDepartment();
+
+    List<Teller> selectBankTellersWithNoDepartment(@Param("bankId") Integer bankId);
 }

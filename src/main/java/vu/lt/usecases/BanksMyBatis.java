@@ -9,10 +9,12 @@ import vu.lt.mybatis.model.Teller;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Model
 public class BanksMyBatis {
@@ -25,6 +27,9 @@ public class BanksMyBatis {
     @Getter
     private List<Bank> allBanks;
 
+    @Getter
+    private Bank bank;
+
     @Getter @Setter
     private Bank bankToCreate = new Bank();
 
@@ -33,6 +38,11 @@ public class BanksMyBatis {
 
     @PostConstruct
     public void init() {
+        Map<String, String> requestParameters =
+                FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Integer bankId = requestParameters.get("bankId") != null ? Integer.parseInt(requestParameters.get("bankId")) : null;
+        this.bank = bankMapper.selectByPrimaryKey(bankId);
+
         this.loadAllBanks();
         this.loadTellersWithNoDepartment();
     }
@@ -42,7 +52,7 @@ public class BanksMyBatis {
     }
 
     private void loadTellersWithNoDepartment() {
-        this.tellersWithNoDepartment = tellerMapper.selectTellersWithNoDepartment();
+        this.tellersWithNoDepartment = tellerMapper.selectBankTellersWithNoDepartment(bank != null ? bank.getId() : null);
     }
 
     @Transactional

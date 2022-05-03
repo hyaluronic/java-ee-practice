@@ -7,6 +7,7 @@
         <typeAlias type="vu.lt.mybatis.model.Bank" alias="Bank"/>
         <typeAlias type="vu.lt.mybatis.model.Teller" alias="Teller"/>
         <typeAlias type="vu.lt.mybatis.model.Client" alias="Client"/>
+        <typeAlias type="vu.lt.mybatis.model.ClientTeller" alias="client_teller"/>
         <typeAlias type="vu.lt.mybatis.model.Account" alias="Account"/>
     </typeAliases>
     <environments default="development">
@@ -21,6 +22,7 @@
         <mapper resource="mybatis/xml/BankMapper.xml"/>
         <mapper resource="mybatis/xml/TellerMapper.xml"/>
         <mapper resource="mybatis/xml/ClientMapper.xml"/>
+        <mapper resource="mybatis/xml/ClientTellerMapper.xml"/>
         <mapper resource="mybatis/xml/AccountMapper.xml"/>
     </mappers>
 </configuration>

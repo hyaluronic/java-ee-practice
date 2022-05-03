@@ -68,9 +68,10 @@
     select ID, DEPARTMENT, NAME, BANK_ID
     from PUBLIC.TELLER
   </select>
-  <select id="selectTellersWithNoDepartment" resultMap="BaseResultMap">
+  <select id="selectBankTellersWithNoDepartment" resultMap="BaseResultMap">
     select *
     from PUBLIC.TELLER
     where DEPARTMENT IS NULL
+    and BANK_ID=#{bankId}
   </select>
 </mapper>
