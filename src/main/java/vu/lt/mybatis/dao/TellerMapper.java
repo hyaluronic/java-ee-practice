@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.cdi.Mapper;
+import vu.lt.mybatis.model.Client;
 import vu.lt.mybatis.model.Teller;
 
 @Mapper

@@ -9,6 +9,11 @@
     -->
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <!-- Manually added for ManyToMany -->
+    <!-- Nested select (N+1 select problem) -->
+    <collection property="tellers" javaType="ArrayList"
+                ofType="Teller" column="id"
+                select="selectTellersForClient"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
@@ -56,5 +61,11 @@
     -->
     select ID, NAME
     from PUBLIC.CLIENT
+  </select>
+  <select id="selectTellersForClient" resultType="Teller">
+    SELECT t.id, t.name, t.department, t.bank_Id
+    FROM public.TELLER t
+           JOIN public.CLIENT_TELLER ct on t.id = ct.TELLERS_ID
+    WHERE ct.CLIENTS_ID = #{id,jdbcType=INTEGER}
   </select>
 </mapper>

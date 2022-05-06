@@ -10,7 +10,7 @@
     <h2>Tellers worcking in #{tellersForBank.bank.name} bank:</h2>
     <ol>
         <ui:repeat value="#{tellersForBank.bank.tellers}" var="teller">
-            <li>#{teller.name} #{teller.department}</li>
+            <li><h:link value="#{teller.name} #{teller.department}" outcome="tellerDetails?tellerId=#{teller.id}" /></li>
         </ui:repeat>
     </ol>
     <h2>Teller with no department:</h2>

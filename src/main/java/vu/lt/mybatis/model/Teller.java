@@ -1,5 +1,8 @@
 package vu.lt.mybatis.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Teller {
     /**
      *
@@ -45,6 +48,22 @@ public class Teller {
 
     public void setBank(Bank bank) {
         this.bank = bank;
+    }
+
+    private List<Client> clients = new ArrayList<>();
+
+    public List<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
+    }
+
+    public void addClient(Client client) {
+        if (client != null){
+            clients.add(client);
+        }
     }
 
     /**

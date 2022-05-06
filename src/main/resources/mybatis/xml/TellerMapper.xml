@@ -16,6 +16,11 @@
     <association property="bank"
                  columnPrefix="bank_"
                  resultMap="vu.lt.mybatis.dao.BankMapper.BaseResultMap"/>
+    <!-- Manually added for ManyToMany -->
+    <!-- Nested select (N+1 select problem) -->
+    <collection property="clients" javaType="ArrayList"
+                ofType="Client" column="id"
+                select="selectClientsForTeller"/>
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
@@ -73,5 +78,11 @@
     from PUBLIC.TELLER
     where DEPARTMENT IS NULL
     and BANK_ID=#{bankId}
+  </select>
+  <select id="selectClientsForTeller" resultType="Client">
+    SELECT c.id, c.name
+    FROM public.CLIENT c
+           JOIN public.CLIENT_TELLER ct on c.id = ct.CLIENTS_ID
+    WHERE ct.TELLERS_ID = #{id,jdbcType=INTEGER}
   </select>
 </mapper>
