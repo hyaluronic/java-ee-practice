@@ -6,9 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class TellerDto {
 
-    private String Name;
+    private String name;
 
-    private Integer DepartmentNumber;
-
-    private String BankName;
+    private Integer departmentNumber;
 }

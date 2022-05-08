@@ -6,6 +6,7 @@ import vu.lt.entities.Account;
 import vu.lt.entities.Client;
 import vu.lt.persistence.AccountDAO;
 import vu.lt.persistence.ClientsDAO;
+import vu.lt.services.account.AccountNumberValidator;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -22,6 +23,9 @@ public class ClientsDetails {
 
     @Inject
     private AccountDAO accountDAO;
+
+    @Inject
+    private AccountNumberValidator accountNumberValidator;
 
     @Getter @Setter
     private Account accountToCreate = new Account();
@@ -42,6 +46,13 @@ public class ClientsDetails {
         if (client.getAccount() != null){
             return "/clients.xhtml?faces-redirect=true&clientId=" + this.client.getId() + "&error=client-account-exists-exception";
         }
+
+        try {
+            accountNumberValidator.validate(accountToCreate.getNumber());
+        } catch (IllegalArgumentException e){
+            return "/clients.xhtml?faces-redirect=true&clientId=" + this.client.getId() + "&error=illegal-account-number-exception";
+        }
+
         accountToCreate.setClient(client);
         this.accountDAO.persist(accountToCreate);
         return "clients.xhtml?clientId=" + this.client.getId() + "&faces-redirect=true";

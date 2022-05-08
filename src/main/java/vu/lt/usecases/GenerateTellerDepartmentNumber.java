@@ -1,7 +1,7 @@
 package vu.lt.usecases;
 
 import vu.lt.interceptors.LoggedInvocation;
-import vu.lt.services.DepartmentNumberGenerator;
+import vu.lt.services.department.DepartmentNumberGenerator;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;

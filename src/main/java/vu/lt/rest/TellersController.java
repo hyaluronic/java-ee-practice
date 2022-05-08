@@ -7,6 +7,7 @@ import vu.lt.rest.contracts.TellerDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -19,24 +20,42 @@ import javax.ws.rs.core.Response;
 public class TellersController {
 
     @Inject
-    @Setter @Getter
+    @Setter
+    @Getter
     private TellersDAO tellersDAO;
 
     @Path("/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getById(@PathParam("id") final Integer id) {
+    public TellerDto getById(@PathParam("id") final Integer id) {
         Teller teller = tellersDAO.findOne(id);
         if (teller == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new EntityNotFoundException("Teller not found");
         }
 
         TellerDto tellerDto = new TellerDto();
         tellerDto.setName(teller.getName());
         tellerDto.setDepartmentNumber(teller.getDepartment());
-        tellerDto.setBankName(teller.getBank().getName());
 
-        return Response.ok(tellerDto).build();
+        return tellerDto;
+    }
+
+    @Path("/")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Response create(TellerDto tellerDto) {
+        Teller teller = new Teller();
+        teller.setName(teller.getName());
+        teller.setDepartment(teller.getDepartment());
+
+        try {
+            tellersDAO.persist(teller);
+        } catch (OptimisticLockException ole) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
+        return Response.ok().build();
     }
 
     @Path("/{id}")

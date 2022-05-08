@@ -14,6 +14,7 @@
             <f:param name="clientId" value="#{clientsDetails.client.id}" />
         </h:commandButton>
         <h:outputText value="Client already has an account" rendered="#{param['error'] == 'client-account-exists-exception'}" />
+        <h:outputText value="Invalid account number" rendered="#{param['error'] == 'illegal-account-number-exception'}" />
     </h:form>
     <h:link outcome="index" value="Back to banks page"/>
 </h:body>
