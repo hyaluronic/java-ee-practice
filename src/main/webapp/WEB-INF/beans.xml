@@ -6,10 +6,13 @@
                       http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
         bean-discovery-mode="annotated">
 
-    <interceptors>
-        <class>vu.lt.interceptors.MethodLogger</class>
-    </interceptors>
     <alternatives>
         <class>vu.lt.services.department.FastDepartmentNumberGenerator</class>
     </alternatives>
+    <interceptors>
+        <class>vu.lt.interceptors.MethodLogger</class>
+    </interceptors>
+    <decorators>
+        <class>vu.lt.decorators.TellersWithNoDepartmentDecorator</class>
+    </decorators>
 </beans>

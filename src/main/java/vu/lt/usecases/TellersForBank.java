@@ -6,7 +6,7 @@ import vu.lt.entities.Bank;
 import vu.lt.entities.Teller;
 import vu.lt.interceptors.LoggedInvocation;
 import vu.lt.persistence.BanksDAO;
-import vu.lt.persistence.TellersDAO;
+import vu.lt.services.teller.TellerService;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
@@ -23,7 +23,7 @@ public class TellersForBank implements Serializable {
     private BanksDAO banksDAO;
 
     @Inject
-    private TellersDAO tellersDAO;
+    private TellerService tellerService;
 
     @Getter @Setter
     private Bank bank;
@@ -42,8 +42,7 @@ public class TellersForBank implements Serializable {
     @Transactional
     @LoggedInvocation
     public String createTeller() {
-        tellerToCreate.setBank(this.bank);
-        tellersDAO.persist(tellerToCreate);
+        tellerService.createTeller(this.bank, tellerToCreate);
         return "tellers?faces-redirect=true&bankId=" + this.bank.getId();
     }
 }
