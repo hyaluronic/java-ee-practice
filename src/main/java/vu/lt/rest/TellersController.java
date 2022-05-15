@@ -46,16 +46,15 @@ public class TellersController {
     @Transactional
     public Response create(TellerDto tellerDto) {
         Teller teller = new Teller();
-        teller.setName(teller.getName());
-        teller.setDepartment(teller.getDepartment());
+        teller.setName(tellerDto.getName());
+        teller.setDepartment(tellerDto.getDepartmentNumber());
 
         try {
             tellersDAO.persist(teller);
+            return Response.ok().build();
         } catch (OptimisticLockException ole) {
             return Response.status(Response.Status.CONFLICT).build();
         }
-
-        return Response.ok().build();
     }
 
     @Path("/{id}")
