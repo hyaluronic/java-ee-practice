@@ -6,9 +6,9 @@
                       http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
         bean-discovery-mode="annotated">
 
-    <alternatives>
-        <class>vu.lt.services.department.FastDepartmentNumberGenerator</class>
-    </alternatives>
+    <!--    <alternatives>-->
+    <!--        <class>vu.lt.services.department.FastDepartmentNumberGenerator</class>-->
+    <!--    </alternatives>-->
     <interceptors>
         <class>vu.lt.interceptors.MethodLogger</class>
     </interceptors>

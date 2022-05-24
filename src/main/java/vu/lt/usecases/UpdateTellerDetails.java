@@ -19,7 +19,8 @@ import java.util.Map;
 
 @ViewScoped
 @Named
-@Getter @Setter
+@Getter
+@Setter
 public class UpdateTellerDetails implements Serializable {
 
     private Teller teller;
@@ -27,23 +28,36 @@ public class UpdateTellerDetails implements Serializable {
     @Inject
     private TellersDAO tellersDAO;
 
+    private String overrideMessage = "";
+
     @PostConstruct
     private void init() {
         System.out.println("updateTellerClients INIT CALLED");
         Map<String, String> requestParameters =
                 FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         Integer tellerId = Integer.parseInt(requestParameters.get("tellerId"));
+        this.overrideMessage = requestParameters.get("overrideMessage") != null ? requestParameters.get("overrideMessage") : "";
         this.teller = tellersDAO.findOne(tellerId);
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     @LoggedInvocation
     public String updateTeller() {
-        try{
+        try {
+            this.overrideMessage = "";
             tellersDAO.update(this.teller);
         } catch (OptimisticLockException e) {
-            return "/tellerDetails.xhtml?faces-redirect=true&tellerId=" + this.teller.getId() + "&error=optimistic-lock-exception";
+            this.overrideMessage = "value was overriden";
+            try {
+                Teller newTeller = tellersDAO.findOne(this.teller.getId());
+                newTeller.setDepartment(teller.getDepartment());
+                tellersDAO.update(newTeller);
+            } catch (OptimisticLockException ex) {
+                return "/tellerDetails.xhtml?faces-redirect=true&tellerId=" + this.teller.getId() + "&error=optimistic-lock-exception";
+            }
         }
-        return "tellers.xhtml?bankId=" + this.teller.getBank().getId() + "&faces-redirect=true";
+//        return "tellers.xhtml?bankId=" + this.teller.getBank().getId() + "&faces-redirect=true";
+
+        return "/tellerDetails.xhtml?faces-redirect=true&tellerId=" + this.teller.getId() + "&overrideMessage=" + overrideMessage;
     }
 }

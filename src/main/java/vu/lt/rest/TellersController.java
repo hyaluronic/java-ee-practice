@@ -1,6 +1,7 @@
 package vu.lt.rest;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import vu.lt.entities.Teller;
 import vu.lt.persistence.TellersDAO;
 import vu.lt.rest.contracts.TellerDto;
@@ -11,7 +12,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
-import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -24,11 +24,11 @@ public class TellersController {
     @Getter
     private TellersDAO tellersDAO;
 
-    @Path("/{id}")
+    @Path("/{tellerId}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public TellerDto getById(@PathParam("id") final Integer id) {
-        Teller teller = tellersDAO.findOne(id);
+    public TellerDto getById(@PathParam("tellerId") final Integer tellerId) {
+        Teller teller = tellersDAO.findOne(tellerId);
         if (teller == null) {
             throw new EntityNotFoundException("Teller not found");
         }
@@ -49,20 +49,16 @@ public class TellersController {
         teller.setName(tellerDto.getName());
         teller.setDepartment(tellerDto.getDepartmentNumber());
 
-        try {
-            tellersDAO.persist(teller);
-            return Response.ok().build();
-        } catch (OptimisticLockException ole) {
-            return Response.status(Response.Status.CONFLICT).build();
-        }
+        tellersDAO.persist(teller);
+        return Response.ok().build();
     }
 
-    @Path("/{id}")
+    @Path("/{tellerId}")
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response update(
-            @PathParam("id") final Integer tellerId,
+            @PathParam("tellerId") final Integer tellerId,
             TellerDto tellerData) {
         try {
             Teller existingTeller = tellersDAO.findOne(tellerId);

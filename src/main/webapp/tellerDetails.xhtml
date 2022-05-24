@@ -15,6 +15,8 @@
         <h:commandButton value="update" action="#{updateTellerDetails.updateTeller}">
             <f:param name="tellerId" value="#{updateTellerDetails.teller.id}"/>
         </h:commandButton>
+        <h:outputText value="#{updateTellerDetails.overrideMessage}" rendered="true"/>
+        <h2>#{updateTellerDetails.overrideMessage}</h2>
         <h:outputText value="Value was already modified by other user. If you want to override it - try again"
                       rendered="#{param['error'] == 'optimistic-lock-exception'}"/>
     </h:form>
